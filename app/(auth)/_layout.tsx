@@ -4,9 +4,10 @@ import { StyleSheet } from 'react-native';
 
 const AuthLayout = () => {
   return (
-    <Stack>
+    <Stack initialRouteName="login">
+      <Stack.Screen name="index" options={{ headerShown: false }} />
       <Stack.Screen name="login" options={{ headerShown: false }} />
-      <Stack.Screen name="register" options={{ headerShown: false }} />
+      <Stack.Screen name="register" options={{ title: 'Create account' }} />
     </Stack>
   );
 };

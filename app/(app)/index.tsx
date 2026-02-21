@@ -13,7 +13,7 @@ import { Container } from '@/components/container';
 import { api } from '@/convex/_generated/api';
 
 export default function Home() {
-  const healthCheck = useQuery(api.tasks.get);
+  const healthCheck = useQuery(api.auth.isAuthenticated);
   const successColor = useThemeColor('success');
   const dangerColor = useThemeColor('danger');
 
