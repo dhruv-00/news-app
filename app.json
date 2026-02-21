@@ -1,0 +1,17 @@
+{
+  "expo": {
+    "scheme": "convex-news",
+    "userInterfaceStyle": "automatic",
+    "orientation": "default",
+    "web": {
+      "bundler": "metro"
+    },
+    "name": "convex-news",
+    "slug": "convex-news",
+    "plugins": ["expo-font"],
+    "experiments": {
+      "typedRoutes": true,
+      "reactCompiler": true
+    }
+  }
+}
