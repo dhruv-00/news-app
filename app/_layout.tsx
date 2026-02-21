@@ -1,6 +1,8 @@
-import { AppThemeProvider } from '@/contexts/app-theme-context';
 import '@/global.css';
+import { AppThemeProvider } from '@/src/contexts/app-theme-context';
+import { queryClient } from '@/src/lib/query';
 import { ConvexAuthProvider } from '@convex-dev/auth/react';
+import { QueryClientProvider } from '@tanstack/react-query';
 import { ConvexProvider, ConvexReactClient, useConvexAuth } from 'convex/react';
 import { Stack } from 'expo-router';
 import * as SecureStore from 'expo-secure-store';
@@ -13,10 +15,6 @@ const secureStorage = {
   getItem: SecureStore.getItemAsync,
   setItem: SecureStore.setItemAsync,
   removeItem: SecureStore.deleteItemAsync,
-};
-
-export const unstable_settings = {
-  initialRouteName: '(drawer)',
 };
 
 const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
@@ -44,25 +42,27 @@ function StackLayout() {
 
 export default function Layout() {
   return (
-    <ConvexAuthProvider
-      client={convex}
-      storage={
-        Platform.OS === 'android' || Platform.OS === 'ios'
-          ? secureStorage
-          : undefined
-      }
-    >
-      <ConvexProvider client={convex}>
-        <GestureHandlerRootView style={{ flex: 1 }}>
-          <KeyboardProvider>
-            <AppThemeProvider>
-              <HeroUINativeProvider>
-                <StackLayout />
-              </HeroUINativeProvider>
-            </AppThemeProvider>
-          </KeyboardProvider>
-        </GestureHandlerRootView>
-      </ConvexProvider>
-    </ConvexAuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <ConvexAuthProvider
+        client={convex}
+        storage={
+          Platform.OS === 'android' || Platform.OS === 'ios'
+            ? secureStorage
+            : undefined
+        }
+      >
+        <ConvexProvider client={convex}>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <KeyboardProvider>
+              <AppThemeProvider>
+                <HeroUINativeProvider>
+                  <StackLayout />
+                </HeroUINativeProvider>
+              </AppThemeProvider>
+            </KeyboardProvider>
+          </GestureHandlerRootView>
+        </ConvexProvider>
+      </ConvexAuthProvider>
+    </QueryClientProvider>
   );
 }

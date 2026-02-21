@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { withUniwind } from 'uniwind';
 
-import { Container } from '@/components/container';
+import { Container } from '@/src/components/container';
 
 const StyledIonicons = withUniwind(Ionicons);
 

@@ -1,5 +1,4 @@
 import { useAuthActions } from '@convex-dev/auth/react';
-import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
 import {
   Button,
@@ -14,11 +13,8 @@ import {
 } from 'heroui-native';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { withUniwind } from 'uniwind';
 
-import { Container } from '@/components/container';
-
-const StyledIonicons = withUniwind(Ionicons);
+import { Container } from '@/src/components/container';
 
 const MIN_PASSWORD_LENGTH = 8;
 
