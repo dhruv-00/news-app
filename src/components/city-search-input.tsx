@@ -1,5 +1,7 @@
+import { api } from '@/convex/_generated/api';
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
+import { useAction } from 'convex/react';
 import { Input, Label, TextField, useThemeColor } from 'heroui-native';
 import { useCallback, useRef, useState } from 'react';
 import {
@@ -10,7 +12,6 @@ import {
   View,
 } from 'react-native';
 import { withUniwind } from 'uniwind';
-import GoogleApiService from '../services/google-api-service';
 import { CitySelect } from '../types/places';
 
 const StyledIonicons = withUniwind(Ionicons);
@@ -32,9 +33,11 @@ export function CitySearchInput({
     undefined
   );
   const themeColorMuted = useThemeColor('muted');
+  const fetchPredictions = useAction(api.location.fetchPredictions);
+  const fetchDetails = useAction(api.location.fetchPlaceDetails);
   const { data: predictions = [], isFetching } = useQuery({
     queryKey: ['place-predictions', query],
-    queryFn: () => GoogleApiService.fetchPredictions(query),
+    queryFn: () => fetchPredictions({ input: query }),
     select(data) {
       return data.map((p) => ({
         place_id: p.place_id,
@@ -47,7 +50,7 @@ export function CitySearchInput({
   const fetchPlaceDetails = useCallback(
     async (placeId: string) => {
       try {
-        const details = await GoogleApiService.fetchPlaceDetails(placeId);
+        const details = await fetchDetails({ placeId });
         if (details) {
           onCitySelect(details);
         }

@@ -56,7 +56,7 @@ EXPO_PUBLIC_CONVEX_URL=https://your-project.convex.cloud
 EXPO_PUBLIC_CONVEX_SITE_URL=https://your-project.convex.site
 
 # Google Places API – city autocomplete (https://console.cloud.google.com)
-EXPO_PUBLIC_GOOGLE_PLACES_API_KEY=your_google_places_api_key
+GOOGLE_PLACES_API_KEY=your_google_places_api_key
 ```
 
 SerpAPI is used for news search. Get an API key from [serpapi.com](https://serpapi.com). The key is currently configured in `src/services/news-api-service.ts`; for production, move it to a Convex HTTP action and use environment variables.

@@ -11,9 +11,11 @@
 import type * as admin from "../admin.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as location from "../location.js";
 import type * as news from "../news.js";
 import type * as searchLogs from "../searchLogs.js";
 import type * as seedAdmin from "../seedAdmin.js";
+import type * as services_google_api_service from "../services/google_api_service.js";
 import type * as services_news_api_service from "../services/news_api_service.js";
 import type * as sessions from "../sessions.js";
 import type * as userProfiles from "../userProfiles.js";
@@ -28,9 +30,11 @@ declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   auth: typeof auth;
   http: typeof http;
+  location: typeof location;
   news: typeof news;
   searchLogs: typeof searchLogs;
   seedAdmin: typeof seedAdmin;
+  "services/google_api_service": typeof services_google_api_service;
   "services/news_api_service": typeof services_news_api_service;
   sessions: typeof sessions;
   userProfiles: typeof userProfiles;
