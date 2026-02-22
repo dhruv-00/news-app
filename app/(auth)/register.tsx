@@ -14,8 +14,6 @@ import {
 import { useState } from 'react';
 import { View } from 'react-native';
 
-import { Container } from '@/src/components/container';
-
 const MIN_PASSWORD_LENGTH = 8;
 
 export default function Register() {
@@ -80,10 +78,7 @@ export default function Register() {
   };
 
   return (
-    <Container
-      className="px-4 justify-center"
-      scrollViewProps={{ keyboardShouldPersistTaps: 'handled' }}
-    >
+    <View className="flex-1 bg-background px-4 justify-center">
       <View className="gap-6 max-w-md w-full mx-auto justify-center flex-1">
         <Card variant="secondary" className="p-6 rounded-2xl">
           <Card.Body className="gap-6">
@@ -173,6 +168,6 @@ export default function Register() {
           </Card.Body>
         </Card>
       </View>
-    </Container>
+    </View>
   );
 }

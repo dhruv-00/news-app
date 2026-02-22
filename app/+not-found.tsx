@@ -2,13 +2,11 @@ import { Link, Stack } from 'expo-router';
 import { Button, Surface } from 'heroui-native';
 import { Text, View } from 'react-native';
 
-import { Container } from '@/src/components/container';
-
 export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen options={{ title: 'Not Found' }} />
-      <Container>
+      <View className="flex-1 bg-background">
         <View className="flex-1 justify-center items-center p-4">
           <Surface
             variant="secondary"
@@ -26,7 +24,7 @@ export default function NotFoundScreen() {
             </Link>
           </Surface>
         </View>
-      </Container>
+      </View>
     </>
   );
 }

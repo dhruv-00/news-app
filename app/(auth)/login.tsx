@@ -15,8 +15,6 @@ import { useState } from 'react';
 import { View } from 'react-native';
 import { withUniwind } from 'uniwind';
 
-import { Container } from '@/src/components/container';
-
 const StyledIonicons = withUniwind(Ionicons);
 
 export default function Login() {
@@ -67,10 +65,7 @@ export default function Login() {
   };
 
   return (
-    <Container
-      className="flex-1 p-4 justify-center"
-      scrollViewProps={{ keyboardShouldPersistTaps: 'handled' }}
-    >
+    <View className="flex-1 bg-background p-4 justify-center">
       <View className="gap-6 max-w-md w-full mx-auto flex-1 justify-center">
         <Card variant="secondary" className="p-6 rounded-2xl">
           <Card.Body className="gap-6">
@@ -135,6 +130,6 @@ export default function Login() {
           </Card.Body>
         </Card>
       </View>
-    </Container>
+    </View>
   );
 }

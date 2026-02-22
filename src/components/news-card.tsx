@@ -1,5 +1,6 @@
+import { Image } from 'expo-image';
 import { Card } from 'heroui-native';
-import { Image, Linking, Pressable, Text, View } from 'react-native';
+import { Linking, Pressable, Text, View } from 'react-native';
 import { NewsItem } from '../types/news';
 
 type NewsCardProps = {
@@ -27,8 +28,10 @@ export function NewsCard({ newsItem }: NewsCardProps) {
         <Card.Body className="gap-2 flex-row items-center">
           <Card.Header>
             <Image
+              cachePolicy="memory-disk"
+              priority="high"
               source={{ uri: newsItem.thumbnail }}
-              className="w-20 h-20 rounded-xl"
+              style={{ width: 80, height: 80, borderRadius: 10 }}
             />
           </Card.Header>
           <View className="flex-1">

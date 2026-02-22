@@ -21,20 +21,24 @@ const convex = new ConvexReactClient(process.env.EXPO_PUBLIC_CONVEX_URL!, {
   unsavedChangesWarning: false,
 });
 
-function StackLayout() {
+function AppLayout() {
   const { isAuthenticated, isLoading } = useConvexAuth();
 
   if (isLoading) {
     return <Spinner />;
   }
 
+  const isWeb = Platform.OS === 'web';
   return (
-    <Stack screenOptions={{}}>
-      <Stack.Protected guard={isAuthenticated}>
+    <Stack>
+      <Stack.Protected guard={!isWeb && isAuthenticated}>
         <Stack.Screen name="(app)" options={{ headerShown: false }} />
       </Stack.Protected>
-      <Stack.Protected guard={!isAuthenticated}>
+      <Stack.Protected guard={!isWeb && !isAuthenticated}>
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+      </Stack.Protected>
+      <Stack.Protected guard={isWeb}>
+        <Stack.Screen name="(admin)" options={{ headerShown: false }} />
       </Stack.Protected>
     </Stack>
   );
@@ -56,7 +60,7 @@ export default function Layout() {
             <KeyboardProvider>
               <AppThemeProvider>
                 <HeroUINativeProvider>
-                  <StackLayout />
+                  <AppLayout />
                 </HeroUINativeProvider>
               </AppThemeProvider>
             </KeyboardProvider>
