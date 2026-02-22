@@ -1,4 +1,4 @@
-import { useMutation } from 'convex/react';
+import { useAction, useMutation } from 'convex/react';
 import { Label, SearchField, Spinner, TextField } from 'heroui-native';
 import { useCallback, useState } from 'react';
 import {
@@ -15,7 +15,6 @@ import { api } from '@/convex/_generated/api';
 import LocationPicker from '@/src/components/location-picker';
 import LogOutButton from '@/src/components/log-out-button';
 import { NewsCard } from '@/src/components/news-card';
-import NewsApiService from '@/src/services/news-api-service';
 import TrackingService from '@/src/services/tracking-service';
 import { useLocationStore } from '@/src/stores/location-store';
 import { useQuery } from '@tanstack/react-query';
@@ -26,6 +25,7 @@ export default function Dashboard() {
   const selectedCity = useLocationStore((s) => s.selectedCity);
   const setSelectedCity = useLocationStore((s) => s.setSelectedCity);
   const [newsSearchQuery, setNewsSearchQuery] = useState('');
+  const fetchNews = useAction(api.news.fetchNews);
 
   const { data: news = [], isFetching } = useQuery({
     queryKey: [
@@ -35,7 +35,7 @@ export default function Dashboard() {
       newsSearchQuery,
     ],
     queryFn: () =>
-      NewsApiService.fetchNews({
+      fetchNews({
         cityName: selectedCity?.cityName ?? '',
         countryCode: selectedCity?.countryCode ?? '',
         query: newsSearchQuery,

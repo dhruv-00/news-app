@@ -1,4 +1,4 @@
-import { NewsItem } from '../types/news';
+import { NewsItem } from '../../src/types/news';
 
 class NewsApiService {
   private static get apiKey() {
