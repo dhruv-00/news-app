@@ -10,6 +10,13 @@ function formatDate(ts: number): string {
 export default function AdminSearchLogs() {
   const logs = useQuery(api.admin.listSearchLogs, {});
 
+  const formatDuration = (duration: number): string => {
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration % 3600) / 60);
+    const seconds = duration % 60;
+    return `${hours}h ${minutes}m ${seconds}s`;
+  };
+
   if (logs === undefined) {
     return (
       <View style={{ padding: 24 }}>
@@ -52,6 +59,7 @@ export default function AdminSearchLogs() {
           <Text style={{ flex: 1, fontWeight: '600' }}>User email</Text>
           <Text style={{ flex: 2, fontWeight: '600' }}>Search query</Text>
           <Text style={{ flex: 1, fontWeight: '600' }}>Date/time</Text>
+          <Text style={{ flex: 1, fontWeight: '600' }}>Active duration</Text>
         </View>
         {logs.length === 0 ? (
           <View style={{ padding: 24, alignItems: 'center' }}>
@@ -73,6 +81,9 @@ export default function AdminSearchLogs() {
                 {log.searchQuery}
               </Text>
               <Text style={{ flex: 1 }}>{formatDate(log.timestamp)}</Text>
+              <Text style={{ flex: 1 }}>
+                {formatDuration(log.activeTimestamp)}
+              </Text>
             </View>
           ))
         )}

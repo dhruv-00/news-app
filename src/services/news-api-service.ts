@@ -3,7 +3,6 @@ import { NewsItem } from '../types/news';
 class NewsApiService {
   private static get apiKey() {
     return '039b91f3475508652be322bd838c505c2e559372850ac552d63b9a792b841318';
-    // return process.env.EXPO_PUBLIC_NEWS_API_KEY;
   }
 
   static async fetchNews(args: {
@@ -17,7 +16,7 @@ class NewsApiService {
     }
 
     const query = encodeURIComponent(
-      args.query ?? `latest news in ${args.cityName}`
+      args.query || `latest news in ${args.cityName}`
     );
     const url = `https://serpapi.com/search.json?engine=google_news&q=${query}&gl=${args.countryCode}&hl=en&api_key=${apiKey}`;
 

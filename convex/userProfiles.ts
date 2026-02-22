@@ -1,6 +1,6 @@
 import { getAuthUserId } from '@convex-dev/auth/server';
-import { mutation } from './_generated/server';
 import { v } from 'convex/values';
+import { mutation } from './_generated/server';
 
 export const updateProfile = mutation({
   args: {
@@ -16,7 +16,7 @@ export const updateProfile = mutation({
       .first();
 
     if (existing) {
-      await ctx.db.patch(existing._id, {
+      await ctx.db.patch('userProfiles', existing._id, {
         city: args.city ?? existing.city,
       });
       return existing._id;
@@ -30,25 +30,28 @@ export const updateProfile = mutation({
 });
 
 export const updateLastLogin = mutation({
-  args: {},
-  handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) return null;
-
+  args: {
+    email: v.string(),
+  },
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query('users')
+      .withIndex('email', (q) => q.eq('email', args.email))
+      .first();
+    if (!user?._id) {
+      console.log('No user found');
+      return null;
+    }
+    const userId = user._id;
+    const now = Date.now();
     const existing = await ctx.db
       .query('userProfiles')
       .withIndex('userId', (q) => q.eq('userId', userId))
       .first();
-
-    const now = Date.now();
     if (existing) {
-      await ctx.db.patch(existing._id, { lastLoginAt: now });
+      await ctx.db.patch('userProfiles', existing._id, { lastLoginAt: now });
       return existing._id;
     }
-    return await ctx.db.insert('userProfiles', {
-      userId,
-      lastLoginAt: now,
-      isAdmin: false,
-    });
+    return await ctx.db.insert('userProfiles', { userId, lastLoginAt: now });
   },
 });

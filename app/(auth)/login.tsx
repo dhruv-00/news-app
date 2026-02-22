@@ -1,5 +1,6 @@
+import { api } from '@/convex/_generated/api';
 import { useAuthActions } from '@convex-dev/auth/react';
-import { Ionicons } from '@expo/vector-icons';
+import { useMutation } from 'convex/react';
 import { Link } from 'expo-router';
 import {
   Button,
@@ -13,14 +14,12 @@ import {
 } from 'heroui-native';
 import { useState } from 'react';
 import { View } from 'react-native';
-import { withUniwind } from 'uniwind';
-
-const StyledIonicons = withUniwind(Ionicons);
 
 export default function Login() {
   const { signIn } = useAuthActions();
   const { toast } = useToast();
   const themeColorAccentForeground = useThemeColor('accent-foreground');
+  const updateLastLogin = useMutation(api.userProfiles.updateLastLogin);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -46,6 +45,15 @@ export default function Login() {
         email: trimmedEmail,
         password: trimmedPassword,
       });
+      console.log('Updating last login');
+      updateLastLogin({ email: trimmedEmail })
+        .then(() => {
+          console.log('Updated last login');
+        })
+        .catch(() => {
+          console.log('Failed to update last login');
+        });
+
       if (result?.signingIn === false && result?.redirect) {
         toast.show({
           label: 'Sign in requires additional step',

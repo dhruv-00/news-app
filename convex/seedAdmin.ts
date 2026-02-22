@@ -1,5 +1,5 @@
-import { internalMutation } from './_generated/server';
 import { v } from 'convex/values';
+import { internalMutation } from './_generated/server';
 
 /**
  * Run once from Convex dashboard to promote a user to admin.
@@ -20,7 +20,7 @@ export const promoteToAdmin = internalMutation({
       .first();
 
     if (existing) {
-      await ctx.db.patch(existing._id, { isAdmin: true });
+      await ctx.db.patch('userProfiles', existing._id, { isAdmin: true });
       return existing._id;
     }
     return await ctx.db.insert('userProfiles', {

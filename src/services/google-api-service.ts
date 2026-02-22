@@ -2,7 +2,7 @@ import { PlacePrediction } from '../types/places';
 
 class GoogleApiService {
   private static get apiKey() {
-    return process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
+    return process.env.EXPO_PUBLIC_GOOGLE_PLACES_API_KEY;
   }
 
   static async fetchPredictions(input: string) {

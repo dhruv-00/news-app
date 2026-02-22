@@ -1,4 +1,3 @@
-import { Ionicons } from '@expo/vector-icons';
 import { useMutation } from 'convex/react';
 import { Label, SearchField, Spinner, TextField } from 'heroui-native';
 import { useCallback, useState } from 'react';
@@ -11,17 +10,15 @@ import {
   TextInputSubmitEditingEventData,
   View,
 } from 'react-native';
-import { withUniwind } from 'uniwind';
 
 import { api } from '@/convex/_generated/api';
 import LocationPicker from '@/src/components/location-picker';
 import LogOutButton from '@/src/components/log-out-button';
 import { NewsCard } from '@/src/components/news-card';
 import NewsApiService from '@/src/services/news-api-service';
+import TrackingService from '@/src/services/tracking-service';
 import { useLocationStore } from '@/src/stores/location-store';
 import { useQuery } from '@tanstack/react-query';
-
-const StyledIonicons = withUniwind(Ionicons);
 
 export default function Dashboard() {
   const logSearch = useMutation(api.searchLogs.logSearch);
@@ -52,19 +49,19 @@ export default function Dashboard() {
       const query = e.nativeEvent.text?.trim() ?? '';
       setNewsSearchQuery(query);
       if (query) {
+        const activeTimestamp = TrackingService.currentSessionDuration();
         const now = Date.now();
         logSearch({
           searchQuery: query,
           timestamp: now,
-          activeTimestamp: now,
-        }).catch(() => {});
+          activeTimestamp: activeTimestamp,
+        });
       }
     },
     [logSearch]
   );
 
   const hasNews = news.length > 0;
-  const showEmpty = !isFetching && !hasNews;
   const showNews = hasNews && !isFetching;
 
   const emptyComponent = isFetching ? (
@@ -78,8 +75,6 @@ export default function Dashboard() {
       </Text>
     </View>
   );
-
-  console.log({ news });
 
   return (
     <View className="flex-1 p-safe bg-background">

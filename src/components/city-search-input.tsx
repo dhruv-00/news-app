@@ -27,13 +27,12 @@ export function CitySearchInput({
   defaultValue = '',
 }: Props) {
   const [query, setQuery] = useState(defaultValue);
-  const [isLoading, setIsLoading] = useState(false);
   const [isFocused, setIsFocused] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(
     undefined
   );
   const themeColorMuted = useThemeColor('muted');
-  const { data: predictions = [] } = useQuery({
+  const { data: predictions = [], isFetching } = useQuery({
     queryKey: ['place-predictions', query],
     queryFn: () => GoogleApiService.fetchPredictions(query),
     select(data) {
@@ -69,12 +68,11 @@ export function CitySearchInput({
   );
 
   const handleChangeText = useCallback((text: string) => {
-    setQuery(text);
     if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
     debounceRef.current = setTimeout(() => {
-      setIsLoading(true);
+      setQuery(text);
     }, 500);
   }, []);
 
@@ -87,7 +85,7 @@ export function CitySearchInput({
         <View className="relative">
           <Input
             placeholder={placeholder}
-            value={query}
+            defaultValue={query}
             onChangeText={handleChangeText}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setTimeout(() => setIsFocused(false), 200)}
@@ -96,7 +94,7 @@ export function CitySearchInput({
             className="pr-10"
           />
           <View className="absolute right-3 top-0 bottom-0 justify-center">
-            {isLoading ? (
+            {isFetching ? (
               <ActivityIndicator size="small" color={themeColorMuted} />
             ) : (
               <StyledIonicons
@@ -111,7 +109,7 @@ export function CitySearchInput({
 
       {showSuggestions && (
         <View className="absolute top-full left-0 right-0 mt-1 bg-background border border-default rounded-xl shadow-lg max-h-60 overflow-hidden">
-          {isLoading ? (
+          {isFetching ? (
             <View className="p-4 items-center">
               <ActivityIndicator />
             </View>

@@ -1,4 +1,6 @@
+import { api } from '@/convex/_generated/api';
 import { useAuthActions } from '@convex-dev/auth/react';
+import { useMutation } from 'convex/react';
 import { Link } from 'expo-router';
 import {
   Button,
@@ -20,13 +22,12 @@ export default function Register() {
   const { signIn } = useAuthActions();
   const { toast } = useToast();
   const themeColorAccentForeground = useThemeColor('accent-foreground');
+  const updateLastLogin = useMutation(api.userProfiles.updateLastLogin);
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setIsConfirmPasswordVisible] =
-    useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async () => {
@@ -65,6 +66,14 @@ export default function Register() {
         email: trimmedEmail,
         password: trimmedPassword,
       });
+      console.log('Updating last login');
+      updateLastLogin()
+        .then(() => {
+          console.log('Updated last login');
+        })
+        .catch(() => {
+          console.log('Failed to update last login');
+        });
     } catch (error) {
       const message =
         error instanceof Error ? error.message : 'Failed to create account';
@@ -131,7 +140,7 @@ export default function Register() {
                     onChangeText={setConfirmPassword}
                     className="flex-1 pr-10"
                     placeholder="Confirm your password"
-                    secureTextEntry={!isConfirmPasswordVisible}
+                    secureTextEntry={true}
                     autoComplete="new-password"
                     editable={!isLoading}
                   />
